@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -49,7 +49,7 @@ const Footer = () => {
           <h3 className="text-white font-semibold mb-4">Connect</h3>
           <div className="flex gap-5 text-xl">
             <a
-              href="https://github.com/"
+              href="https://github.com/vaibhavmishram3"
               target="_blank"
               rel="noreferrer"
               className="hover:text-white transition"
@@ -57,7 +57,7 @@ const Footer = () => {
               <FaGithub />
             </a>
             <a
-              href="https://linkedin.com/"
+              href="https://www.linkedin.com/in/vaibhavmishram3/"
               target="_blank"
               rel="noreferrer"
               className="hover:text-white transition"
@@ -65,12 +65,12 @@ const Footer = () => {
               <FaLinkedin />
             </a>
             <a
-              href="https://twitter.com/"
+              href="https://wa.me/+918302979123"
               target="_blank"
               rel="noreferrer"
               className="hover:text-white transition"
             >
-              <FaTwitter />
+              <FaWhatsapp/>
             </a>
           </div>
         </div>
