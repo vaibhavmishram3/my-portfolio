@@ -29,7 +29,7 @@ const Home = () => {
         <div className="flex-1 space-y-6">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
             Hi, I'm{" "}
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
               Vaibhav Mishra
             </span>
           </h1>
@@ -62,7 +62,7 @@ const Home = () => {
           <div className="flex gap-4 mt-6">
             <Link
               to="/projects"
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:scale-105 transition"
+              className="px-6 py-3 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 text-white font-medium hover:scale-105 transition"
             >
               View Projects
             </Link>
@@ -79,7 +79,11 @@ const Home = () => {
         {/* Right Image */}
         <div className="flex-1 flex justify-center relative">
           {/* Glow */}
+<<<<<<< HEAD
           <div className="absolute w-80 h-80 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-3xl z-0 opacity-20"></div>
+=======
+          <div className="absolute w-80 h-80 bg-linear-to-r from-blue-600 to-purple-600 rounded-full blur-3xl opacity-20"></div>
+>>>>>>> e4065bf (first deploy)
 
           <Tilt
             glareEnable={true}
@@ -93,7 +97,11 @@ const Home = () => {
             <img
               src={PImg}
               alt="Profile"
+<<<<<<< HEAD
               className="w-full h-full object-cover object-top"
+=======
+              className="absolute inset-0 w-full h-full object-cover object-top"
+>>>>>>> e4065bf (first deploy)
             />
           </Tilt>
         </div>

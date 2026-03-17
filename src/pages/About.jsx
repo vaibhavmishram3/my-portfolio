@@ -35,7 +35,11 @@ const About = () => {
               <img
                 src={PImg}
                 alt="Profile"
+<<<<<<< HEAD
                 className="w-full h-full object-cover object-top"
+=======
+                className="absolute inset-0 w-full h-full object-cover object-top"
+>>>>>>> e4065bf (first deploy)
               />
             </Tilt>
           </div>
