@@ -35,11 +35,7 @@ const About = () => {
               <img
                 src={PImg}
                 alt="Profile"
-<<<<<<< HEAD
                 className="w-full h-full object-cover object-top"
-=======
-                className="absolute inset-0 w-full h-full object-cover object-top"
->>>>>>> e4065bf (first deploy)
               />
             </Tilt>
           </div>
@@ -47,7 +43,12 @@ const About = () => {
 
         {/* RIGHT - TEXT */}
         <div>
-          <h2 className="text-3xl font-bold mb-6">I'm Vaibhav Mishra</h2>
+          <h1 className="text-3xl font-bold mb-6">
+            Hi, I'm{" "}
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+              Vaibhav Mishra
+            </span>
+          </h1>
 
           <p className="text-gray-400 leading-relaxed mb-6">
             I am a dedicated Full Stack Developer with a strong passion for

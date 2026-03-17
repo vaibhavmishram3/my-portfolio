@@ -8,6 +8,6 @@ export default defineConfig({
   theme: {
     extend: {},
   },
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   base: '/my-portifolio/',
 })
