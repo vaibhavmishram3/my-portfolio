@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Tilt from "react-parallax-tilt";
-import PImg from "../assets/ProfileImg.jpg";
+import PImg from "../assets/ProfileImg.webp";
 
 const timeline = [
   {
@@ -507,15 +507,15 @@ const About = () => (
           </Tilt>
         </div>
 
-        {/* Text */}
-        <div className="ab-text-col ab-fu ab-d3">
-          <div className="ab-name">VAIBHAV MISHRA</div>
-          <div className="ab-name-sub">AI &amp; ML Developer · Full Stack Engineer</div>
+        {/* RIGHT - TEXT */}
+        <div>
+          <h2 className="text-3xl font-bold mb-6">I'm Vaibhav Mishra</h2>
 
-          <p className="ab-para">
-            A dedicated Full Stack Developer with a strong passion for building
-            responsive, scalable, and high-performance web applications. I solve
-            real-world problems using modern technologies like React, Node.js, and MongoDB.
+          <p className="text-gray-400 leading-relaxed mb-6">
+            I am a dedicated Full Stack Developer with a strong passion for
+            building responsive, scalable, and high-performance web
+            applications. I enjoy solving real-world problems using modern
+            technologies like React, Node.js, and MongoDB.
           </p>
           <p className="ab-para">
             My goal is to create meaningful digital experiences that are fast,
