@@ -1,152 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
-const projects = [
-  {
-    title: "My Portfolio",
-    description: "Modern responsive developer portfolio built using React, Tailwind CSS, and smooth animations.",
-    tech: ["React", "Tailwind CSS", "Vite"],
-    github: "https://github.com/vaibhavmishram3/my-portfolio",
-    live: "https://vaibhavmishram3.github.io/my-portfolio/",
-    category: "Web Dev",
-  },
-  {
-    title: "Camonk Blog App",
-    description: "High-performance blog application built with React, TypeScript, and TanStack Query with a modern dual-pane UI.",
-    tech: ["React", "TypeScript", "TanStack Query", "Tailwind CSS"],
-    github: "https://github.com/vaibhavmishram3/camonk-interview",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "C++ Programs Collection",
-    description: "Collection of C++ programs covering data structures, algorithms, and problem-solving techniques.",
-    tech: ["C++"],
-    github: "https://github.com/vaibhavmishram3/C-Program",
-    live: "#",
-    category: "DSA",
-  },
-  {
-    title: "GeoClimate AI",
-    description: "AI-based climate analysis project using Python for environmental data processing and prediction.",
-    tech: ["Python", "Machine Learning"],
-    github: "https://github.com/vaibhavmishram3/GeoClimateAI",
-    live: "#",
-    category: "AI / ML",
-  },
-  {
-    title: "Python ChatBot",
-    description: "AI chatbot built using Python capable of handling predefined queries and responses.",
-    tech: ["Python"],
-    github: "https://github.com/vaibhavmishram3/ChatBot",
-    live: "#",
-    category: "AI / ML",
-  },
-  {
-    title: "Hackathon Project 2025",
-    description: "Innovative hackathon project built with modern technologies focusing on performance and UI/UX.",
-    tech: ["TypeScript", "React"],
-    github: "https://github.com/vaibhavmishram3/Hackathon-Project-2025",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "GitHub Profile Repo",
-    description: "Custom GitHub profile repository showcasing personal info, stats, and highlights.",
-    tech: ["Markdown"],
-    github: "https://github.com/vaibhavmishram3/vaibhavmishram3",
-    live: "#",
-    category: "Other",
-  },
-  {
-    title: "mattOS",
-    description: "JavaScript-based experimental OS-like interface simulating desktop experience in the browser.",
-    tech: ["JavaScript", "HTML", "CSS"],
-    github: "https://github.com/vaibhavmishram3/mattOS",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "ProGame",
-    description: "Single-page gaming application built using React and React Router with smooth navigation.",
-    tech: ["React", "React Router", "CSS"],
-    github: "https://github.com/vaibhavmishram3/progame",
-    live: "https://vaibhavmishram3.github.io/progame/",
-    category: "Web Dev",
-  },
-  {
-    title: "New Portfolio",
-    description: "Updated personal portfolio showcasing projects, skills, and achievements.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/vaibhavmishram3/NewPortfolio",
-    live: "https://vaibhavmishram3.github.io/NewPortfolio/",
-    category: "Web Dev",
-  },
-  {
-    title: "YouTube Clone",
-    description: "Frontend clone of YouTube UI built using HTML, CSS, and JavaScript.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/vaibhavmishram3/youtube_clone",
-    live: "https://vaibhavmishram3.github.io/youtube_clone/",
-    category: "Web Dev",
-  },
-  {
-    title: "Tic Tac Toe Game",
-    description: "Interactive Tic-Tac-Toe game built with JavaScript featuring dynamic gameplay.",
-    tech: ["JavaScript", "HTML", "CSS"],
-    github: "https://github.com/vaibhavmishram3/TikTakToe",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "Weather App",
-    description: "Weather forecasting app that displays real-time weather data using APIs.",
-    tech: ["JavaScript", "API", "HTML", "CSS"],
-    github: "https://github.com/vaibhavmishram3/WeatherApp",
-    live: "https://vaibhavmishram3.github.io/WeatherApp/",
-    category: "Web Dev",
-  },
-  {
-    title: "MonkeyType Clone",
-    description: "Typing speed test application inspired by MonkeyType with customizable UI and performance tracking.",
-    tech: ["TypeScript", "Web App"],
-    github: "https://github.com/vaibhavmishram3/monkeytype",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "Portfolio (Old)",
-    description: "Earlier version of personal portfolio showcasing basic frontend skills.",
-    tech: ["HTML", "CSS"],
-    github: "https://github.com/vaibhavmishram3/Portfolio",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "CodSoft Projects",
-    description: "Collection of projects completed during CodSoft internship.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/vaibhavmishram3/CODSOFT",
-    live: "#",
-    category: "Other",
-  },
-  {
-    title: "Coffee Website",
-    description: "Responsive coffee shop landing page with modern UI design.",
-    tech: ["HTML", "CSS"],
-    github: "https://github.com/vaibhavmishram3/CoffeeWebPage",
-    live: "#",
-    category: "Web Dev",
-  },
-  {
-    title: "Bharat Intern Projects",
-    description: "Projects developed during Bharat Intern program focusing on frontend development.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/vaibhavmishram3/BharatIntern",
-    live: "#",
-    category: "Other",
-  },
-];
+const GITHUB_USERNAME = "vaibhavmishram3";
+
+/**
+ * Maps a GitHub-detected language to a category bucket for the filter pills.
+ * This is the only "manual" logic left — everything else (title, description,
+ * stars, live link, language) comes straight from the GitHub API response.
+ */
+function categoryFromLanguage(language) {
+  if (!language) return "Other";
+  const webLangs = ["JavaScript", "TypeScript", "HTML", "CSS", "Vue", "PHP"];
+  const aiLangs = ["Python", "Jupyter Notebook", "R"];
+  const dsaLangs = ["C++", "C", "Java"];
+  if (webLangs.includes(language)) return "Web Dev";
+  if (aiLangs.includes(language)) return "AI / ML";
+  if (dsaLangs.includes(language)) return "DSA";
+  return "Other";
+}
 
 const FILTERS = ["All", "AI / ML", "Web Dev", "DSA", "Other"];
 
@@ -171,10 +42,61 @@ const techColors = {
 
 const Projects = () => {
   const [active, setActive] = useState("All");
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filtered = active === "All"
-    ? projects
-    : projects.filter((p) => p.category === active);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchRepos() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
+        );
+
+        if (!res.ok) {
+          throw new Error(`GitHub API error: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        const mapped = data
+          .filter((repo) => !repo.fork) // hide forked repos
+          .map((repo) => ({
+            title: repo.name,
+            description: repo.description || "No description provided",
+            tech: repo.language ? [repo.language] : [],
+            github: repo.html_url,
+            live: repo.homepage || (repo.has_pages
+              ? `https://${GITHUB_USERNAME}.github.io/${repo.name}/`
+              : "#"),
+            category: categoryFromLanguage(repo.language),
+            stars: repo.stargazers_count,
+            updatedAt: repo.updated_at,
+          }))
+          // most recently updated first (API already sorts this, but explicit is safer)
+          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+        if (!cancelled) setProjects(mapped);
+      } catch (err) {
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchRepos();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filtered =
+    active === "All" ? projects : projects.filter((p) => p.category === active);
 
   return (
     <>
@@ -225,6 +147,9 @@ const Projects = () => {
         @keyframes pjCardIn {
           from { opacity:0; transform: translateY(18px) scale(0.98); }
           to   { opacity:1; transform: translateY(0) scale(1); }
+        }
+        @keyframes pjSpin {
+          to { transform: rotate(360deg); }
         }
 
         /* ── Header ── */
@@ -423,6 +348,12 @@ const Projects = () => {
           flex-shrink: 0;
         }
 
+        /* stars badge */
+        .pj-stars {
+          display: inline-flex; align-items: center; gap: 4px;
+          font-size: 9px; color: rgba(255,215,100,0.7);
+        }
+
         /* divider */
         .pj-card-divider {
           height: 1px;
@@ -454,12 +385,33 @@ const Projects = () => {
           opacity: 0.25; pointer-events: none;
         }
 
-        /* empty state */
+        /* empty / loading / error states */
         .pj-empty {
           grid-column: 1/-1;
           text-align: center; padding: 80px 0;
           color: rgba(0,210,255,0.2);
           font-size: 12px; letter-spacing: 0.15em;
+        }
+        .pj-loader {
+          grid-column: 1/-1;
+          display: flex; flex-direction: column; align-items: center;
+          gap: 16px;
+          padding: 80px 0;
+          color: rgba(0,210,255,0.4);
+          font-size: 11px; letter-spacing: 0.15em;
+        }
+        .pj-spinner {
+          width: 28px; height: 28px;
+          border: 2px solid rgba(0,210,255,0.15);
+          border-top-color: var(--cyan);
+          border-radius: 50%;
+          animation: pjSpin 0.8s linear infinite;
+        }
+        .pj-error {
+          grid-column: 1/-1;
+          text-align: center; padding: 60px 24px;
+          color: rgba(255,100,100,0.7);
+          font-size: 11px; letter-spacing: 0.1em; line-height: 1.8;
         }
       `}</style>
 
@@ -498,61 +450,82 @@ const Projects = () => {
         {/* ── Grid ── */}
         <section className="pj-grid-wrap">
           <div className="pj-grid">
-            {filtered.length === 0 && (
+            {loading && (
+              <div className="pj-loader">
+                <div className="pj-spinner" />
+                FETCHING_REPOS_FROM_GITHUB...
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="pj-error">
+                // FAILED_TO_LOAD_REPOS: {error}
+                <br />
+                (GitHub API may be rate-limited — try again shortly)
+              </div>
+            )}
+
+            {!loading && !error && filtered.length === 0 && (
               <div className="pj-empty">// NO_RESULTS_FOUND</div>
             )}
-            {filtered.map((p, i) => (
-              <div
-                key={p.title}
-                className="pj-card"
-                style={{ animationDelay: `${i * 0.045}s` }}
-              >
-                <span className="pj-card-index">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
 
-                <div className="pj-card-cat">[ {p.category} ]</div>
+            {!loading &&
+              !error &&
+              filtered.map((p, i) => (
+                <div
+                  key={p.title}
+                  className="pj-card"
+                  style={{ animationDelay: `${i * 0.045}s` }}
+                >
+                  <span className="pj-card-index">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
 
-                <h3 className="pj-card-title">{p.title}</h3>
+                  <div className="pj-card-cat">[ {p.category} ]</div>
 
-                <p className="pj-card-desc">{p.description}</p>
+                  <h3 className="pj-card-title">{p.title}</h3>
 
-                <div className="pj-tech-row">
-                  {p.tech.map((t, j) => (
-                    <span key={j} className="pj-tech-pill">
-                      <span
-                        className="pj-tech-dot"
-                        style={{ background: techColors[t] || techColors.default }}
-                      />
-                      {t}
-                    </span>
-                  ))}
+                  <p className="pj-card-desc">{p.description}</p>
+
+                  <div className="pj-tech-row">
+                    {p.tech.map((t, j) => (
+                      <span key={j} className="pj-tech-pill">
+                        <span
+                          className="pj-tech-dot"
+                          style={{ background: techColors[t] || techColors.default }}
+                        />
+                        {t}
+                      </span>
+                    ))}
+                    {p.stars > 0 && (
+                      <span className="pj-stars">★ {p.stars}</span>
+                    )}
+                  </div>
+
+                  <div className="pj-card-divider" />
+
+                  <div className="pj-card-actions">
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="pj-action-link"
+                    >
+                      <FaGithub style={{ fontSize: 11 }} />
+                      Code
+                    </a>
+                    <a
+                      href={p.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`pj-action-link${p.live === "#" ? " disabled" : ""}`}
+                    >
+                      <FaExternalLinkAlt style={{ fontSize: 10 }} />
+                      Live
+                    </a>
+                  </div>
                 </div>
-
-                <div className="pj-card-divider" />
-
-                <div className="pj-card-actions">
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="pj-action-link"
-                  >
-                    <FaGithub style={{ fontSize: 11 }} />
-                    Code
-                  </a>
-                  <a
-                    href={p.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`pj-action-link${p.live === "#" ? " disabled" : ""}`}
-                  >
-                    <FaExternalLinkAlt style={{ fontSize: 10 }} />
-                    Live
-                  </a>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
 
