@@ -142,6 +142,8 @@ const DataTicker = () => {
 
 const Home = () => {
   const [typed, setTyped] = useState("");
+  const [leetcodeStats, setLeetcodeStats] = useState(null);
+  const [loading, setLoading] = useState(true);
   const fullText = "MCA (AI & ML) · Web Developer · Python & C++";
 
   useEffect(() => {
@@ -152,6 +154,44 @@ const Home = () => {
       if (i > fullText.length) clearInterval(id);
     }, 40);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const fetchLeetcodeStats = async () => {
+      try {
+        const response = await fetch(
+          "https://alfa-leetcode-api.onrender.com/vaibhavmishram3/solved",
+          { method: "GET" }
+        );
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        console.log("LeetCode solved data:", data);
+
+        if (data && typeof data.solvedProblem === "number") {
+          setLeetcodeStats({
+            total: data.solvedProblem,
+            easy: data.easySolved,
+            medium: data.mediumSolved,
+            hard: data.hardSolved,
+            attempting: data.attemptedProblems,
+            totalEasy: data.totalEasy,
+            totalMedium: data.totalMedium,
+            totalHard: data.totalHard,
+          });
+        } else {
+          throw new Error("Unexpected response shape");
+        }
+      } catch (e) {
+        console.log("LeetCode fetch failed:", e.message);
+        setLeetcodeStats(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeetcodeStats();
   }, []);
 
   const projects = [
@@ -626,6 +666,186 @@ const Home = () => {
           flex: 1; height: 1px;
           background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
+
+        /* ── LeetCode Section ── */
+        .leetcode-section {
+          position: relative; z-index: 1;
+          max-width: 1280px; margin: 0 auto;
+          padding: 80px 48px;
+        }
+        @media (max-width: 768px) { .leetcode-section { padding: 56px 24px; } }
+
+        .leetcode-card {
+          border: 2px solid var(--cyan);
+          border-radius: 8px;
+          padding: 48px;
+          background: linear-gradient(135deg, rgba(0,210,255,0.08), rgba(0,255,220,0.04));
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 48px;
+          animation: fadeUp 0.8s ease forwards;
+          opacity: 0;
+          animation-delay: 0.3s;
+        }
+        @media (max-width: 768px) {
+          .leetcode-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 32px;
+          }
+        }
+
+        .leetcode-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+          opacity: 0.5;
+        }
+
+        .leetcode-content {
+          flex: 1;
+        }
+
+        .leetcode-label {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          color: var(--cyan);
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .leetcode-label::before {
+          content: '◆';
+          font-size: 8px;
+        }
+
+        .leetcode-stat {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+          margin-bottom: 16px;
+        }
+
+        .leetcode-number {
+          font-family: 'Orbitron', monospace;
+          font-size: 56px;
+          font-weight: 900;
+          color: var(--cyan);
+          text-shadow: 0 0 30px rgba(0,210,255,0.6);
+          line-height: 1;
+          letter-spacing: -0.02em;
+        }
+
+        .leetcode-desc {
+          font-size: 13px;
+          line-height: 1.8;
+          color: rgba(160,220,240,0.65);
+          max-width: 400px;
+        }
+
+        .leetcode-links {
+          display: flex;
+          gap: 16px;
+          margin-top: 20px;
+          flex-wrap: wrap;
+        }
+
+        .leetcode-link {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--teal);
+          text-decoration: none;
+          padding: 6px 14px;
+          border: 1px solid rgba(0,255,220,0.3);
+          border-radius: 4px;
+          transition: all 0.2s;
+        }
+
+        .leetcode-link:hover {
+          border-color: var(--teal);
+          background: rgba(0,255,220,0.1);
+          box-shadow: 0 0 15px rgba(0,255,220,0.2);
+        }
+
+        .leetcode-visual {
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .leetcode-icon {
+          font-size: 64px;
+          filter: drop-shadow(0 0 15px rgba(0,210,255,0.5));
+          animation: floatY 4s ease-in-out infinite;
+        }
+
+        .leetcode-badge {
+          font-family: 'Orbitron', monospace;
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--teal);
+          background: rgba(0,255,220,0.15);
+          border: 1px solid rgba(0,255,220,0.3);
+          padding: 8px 16px;
+          border-radius: 4px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .leetcode-stats-breakdown {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          margin-top: 12px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(0,210,255,0.2);
+        }
+
+        .difficulty-stat {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 3px;
+        }
+
+        .difficulty-label {
+          font-size: 9px;
+          color: var(--muted);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .difficulty-easy { color: #50c878; }
+        .difficulty-medium { color: #ffa500; }
+        .difficulty-hard { color: #ff6b6b; }
+        .difficulty-attempting { color: var(--cyan); }
+
+        .difficulty-number {
+          font-family: 'Orbitron', monospace;
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+        }
+
+        .difficulty-total {
+          font-size: 10px;
+          color: rgba(160,220,240,0.5);
+          font-family: 'JetBrains Mono', monospace;
+        }
       `}</style>
 
       <div className="ai-root">
@@ -715,6 +935,58 @@ const Home = () => {
                 <div className="stat-lbl">{s.label} · {s.sub}</div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── LEETCODE ── */}
+        <section className="leetcode-section">
+          <div className="leetcode-card">
+            <div className="leetcode-content">
+              <div className="leetcode-label">LeetCode Achievement</div>
+              <div className="leetcode-stat">
+                <div className="leetcode-number">
+                  {loading ? "..." : (leetcodeStats?.total || "0")}
+                </div>
+              </div>
+              <p className="leetcode-desc">
+                Problems solved on LeetCode. Strengthening problem-solving skills across algorithms, data structures, and system design patterns.
+              </p>
+
+              {leetcodeStats && !loading && (
+                <div className="leetcode-stats-breakdown">
+                  <div className="difficulty-stat">
+                    <div className="difficulty-label difficulty-easy">Easy</div>
+                    <div className="difficulty-number">{leetcodeStats.easy || 0}</div>
+                    <div className="difficulty-total">/ {leetcodeStats.totalEasy || 951}</div>
+                  </div>
+                  <div className="difficulty-stat">
+                    <div className="difficulty-label difficulty-medium">Medium</div>
+                    <div className="difficulty-number">{leetcodeStats.medium || 0}</div>
+                    <div className="difficulty-total">/ {leetcodeStats.totalMedium || 2077}</div>
+                  </div>
+                  <div className="difficulty-stat">
+                    <div className="difficulty-label difficulty-hard">Hard</div>
+                    <div className="difficulty-number">{leetcodeStats.hard || 0}</div>
+                    <div className="difficulty-total">/ {leetcodeStats.totalHard || 949}</div>
+                  </div>
+                  <div className="difficulty-stat">
+                    <div className="difficulty-label difficulty-attempting">Attempting</div>
+                    <div className="difficulty-number">{leetcodeStats.attempting || 0}</div>
+                    <div className="difficulty-total">problems</div>
+                  </div>
+                </div>
+              )}
+
+              <div className="leetcode-links">
+                <a href="https://leetcode.com/u/vaibhavmishram3/" target="_blank" rel="noopener noreferrer" className="leetcode-link">
+                  View Profile →
+                </a>
+              </div>
+            </div>
+            <div className="leetcode-visual">
+              <div className="leetcode-icon">💻</div>
+              <div className="leetcode-badge">Active Solver</div>
+            </div>
           </div>
         </section>
 

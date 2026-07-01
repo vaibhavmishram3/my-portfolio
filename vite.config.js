@@ -9,5 +9,5 @@ export default defineConfig({
     extend: {},
   },
   plugins: [react()],
-  base: '/my-portifolio/',
+  base: '/my-portfolio/',
 })
