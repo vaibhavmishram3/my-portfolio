@@ -5,9 +5,9 @@ const contactInfo = [
   {
     icon: "◎",
     label: "Email",
-    value: "vaibhavmishram3@gmail.com",
+    value: import.meta.env.VITE_EMAIL || "contact@example.com",
     sub: "Response within 24h",
-    href: "mailto:vaibhavmishram3@gmail.com",
+    href: `mailto:${import.meta.env.VITE_EMAIL || "contact@example.com"}`,
     color: "#00d2ff",
     code: "01",
   },
@@ -35,7 +35,7 @@ const contactInfo = [
 const socials = [
   { icon: <FaGithub />,   href: "https://github.com/vaibhavmishram3",           label: "GitHub"   },
   { icon: <FaLinkedin />, href: "https://www.linkedin.com/in/vaibhavmishram3/", label: "LinkedIn" },
-  { icon: <FaWhatsapp />, href: "https://wa.me/+918302979123",                  label: "WhatsApp" },
+  { icon: <FaWhatsapp />, href: `https://wa.me/${(import.meta.env.VITE_WHATSAPP || "+918302979123").replace(/\D/g, "")}`,                  label: "WhatsApp" },
 ];
 
 const Contact = () => {
